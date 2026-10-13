@@ -1,0 +1,173 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 7 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 2836 >>
+stream
+BT
+/F1 11 Tf
+48 794 Td
+/F1 15 Tf
+(LOOPIFY OWNER ASSISTANT) Tj
+/F1 11 Tf
+0 -16 Td
+(Owner testing guide - current MVP features) Tj
+0 -16 Td
+() Tj
+0 -16 Td
+(This guide describes what is working now and the order to test it.) Tj
+0 -16 Td
+() Tj
+0 -25 Td
+/F1 15 Tf
+(WHAT THE TELEGRAM BOT CAN DO) Tj
+/F1 11 Tf
+0 -16 Td
+(1. Add activities: Send /add followed by a description, for example:) Tj
+0 -16 Td
+(   /add Call John tomorrow at 10am) Tj
+0 -16 Td
+(   You can also send a normal activity sentence without a command.) Tj
+0 -16 Td
+(2. View work: /today, /upcoming, /overdue, and /briefing.) Tj
+0 -16 Td
+(3. Confirm activities: Use the Complete or Cancel buttons on an activity.) Tj
+0 -16 Td
+(4. Reminders: Scheduled activities can produce Telegram reminders.) Tj
+0 -16 Td
+(5. Contacts: Use /contacts to view saved contacts.) Tj
+0 -16 Td
+(6. Dashboard: Send /start, then tap Open dashboard.) Tj
+0 -16 Td
+(   This is the recommended dashboard flow for the owner.) Tj
+0 -16 Td
+(7. Help: /help shows the available bot commands.) Tj
+0 -16 Td
+() Tj
+0 -25 Td
+/F1 15 Tf
+(WHAT THE DASHBOARD CAN DO) Tj
+/F1 11 Tf
+0 -16 Td
+(1. Quick Add activities with type, priority, and scheduled time.) Tj
+0 -16 Td
+(2. View, complete, edit, and delete activities.) Tj
+0 -16 Td
+(3. Manage contacts with name, company, and relationship.) Tj
+0 -16 Td
+(4. Create, search, and delete business notes.) Tj
+0 -16 Td
+(5. View basic reports: totals, pending, completed, completion rate,) Tj
+0 -16 Td
+(   today, overdue, upcoming meetings, and follow-ups.) Tj
+0 -16 Td
+(6. Connect Google Calendar, sync events, and create calendar events) Tj
+0 -16 Td
+(   from scheduled Loopify activities.) Tj
+0 -16 Td
+(7. Linked calendar events are updated or removed when the activity changes.) Tj
+0 -16 Td
+() Tj
+0 -25 Td
+/F1 15 Tf
+(OWNER TESTING STEPS) Tj
+/F1 11 Tf
+0 -16 Td
+(1. Open the Loopify bot and send /start.) Tj
+0 -16 Td
+(2. Tap Open dashboard. Wait briefly if the free hosting service is waking up.) Tj
+0 -16 Td
+(3. Add one task and one scheduled meeting from Quick Add.) Tj
+0 -16 Td
+(4. Return to Telegram and test /today, /upcoming, and /briefing.) Tj
+0 -16 Td
+(5. Complete one activity and cancel another using the buttons.) Tj
+0 -16 Td
+(6. Add a contact and confirm it appears in Contacts.) Tj
+0 -16 Td
+(7. Add a business note, search for it, and delete it if needed.) Tj
+0 -16 Td
+(8. Open Reports and confirm the counts match the activities created.) Tj
+0 -16 Td
+(9. Connect Google Calendar, approve Google access, and tap Sync now.) Tj
+0 -16 Td
+(10. Add one scheduled activity to Google Calendar and verify it there.) Tj
+0 -16 Td
+(11. Change or delete the linked activity and verify the calendar event changes.) Tj
+0 -16 Td
+(12. Wait for a scheduled reminder and confirm it arrives in Telegram.) Tj
+0 -16 Td
+() Tj
+0 -25 Td
+/F1 15 Tf
+(IMPORTANT TESTING NOTES) Tj
+/F1 11 Tf
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 7 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 1012 >>
+stream
+BT
+/F1 11 Tf
+48 794 Td
+(- The owner should use the same Telegram account throughout testing.) Tj
+0 -16 Td
+(- The Mini App requires a public HTTPS deployment; localhost is not enough.) Tj
+0 -16 Td
+(- Google Calendar requires the Google account to be approved as a test user.) Tj
+0 -16 Td
+(- Free hosting may sleep when unused, so the first request can be slow.) Tj
+0 -16 Td
+(- PostgreSQL is the permanent source of saved activities, contacts, and notes.) Tj
+0 -16 Td
+(- This is an MVP testing deployment, not yet a guaranteed production service.) Tj
+0 -16 Td
+() Tj
+0 -25 Td
+/F1 15 Tf
+(CURRENT MVP STATUS) Tj
+/F1 11 Tf
+0 -16 Td
+(Working: Telegram bot, activities, reminders, contacts, Mini App dashboard,) Tj
+0 -16 Td
+(Google Calendar connection and sync, notes, reports, and PostgreSQL storage.) Tj
+0 -16 Td
+() Tj
+0 -16 Td
+(Still required before permanent production: stable hosting, backups, monitoring,) Tj
+0 -16 Td
+(and rotation of the credentials that were used during local development.) Tj
+0 -16 Td
+() Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000121 00000 n 
+0000000247 00000 n 
+0000003135 00000 n 
+0000003261 00000 n 
+0000004325 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+4395
+%%EOF

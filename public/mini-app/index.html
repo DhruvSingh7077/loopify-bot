@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Loopify Owner Assistant</title>
+    <link rel="stylesheet" href="/mini-app/styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">LOOPIFY</p>
+          <h1>Owner Assistant</h1>
+        </div>
+        <button id="refresh-button" class="icon-button" aria-label="Refresh">↻</button>
+      </header>
+
+      <section class="briefing-card">
+        <p class="eyebrow">DAILY BRIEFING</p>
+        <h2 id="briefing-title">Loading your day...</h2>
+        <p id="briefing-summary" class="muted"></p>
+      </section>
+
+      <section class="quick-add card">
+        <div class="section-heading">
+          <h2>Quick Add</h2>
+          <span class="pill">Fast</span>
+        </div>
+        <form id="activity-form">
+          <input id="title" name="title" required maxlength="200" placeholder="What should you remember?">
+          <div class="form-row">
+            <select id="type" name="type">
+              <option value="task">Task</option>
+              <option value="meeting">Meeting</option>
+              <option value="call">Call</option>
+              <option value="follow-up">Follow-up</option>
+            </select>
+            <select id="priority" name="priority">
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+              <option value="critical">Critical</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+          <input id="scheduled-for" name="scheduledFor" type="datetime-local">
+          <button class="primary-button" type="submit">Add activity</button>
+        </form>
+        <p id="form-message" class="form-message" role="status"></p>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Google Calendar</h2>
+          <span id="calendar-status" class="pill">Checking...</span>
+        </div>
+        <p id="calendar-message" class="muted">Connect your calendar to create and sync events later.</p>
+        <div class="activity-actions">
+          <button id="connect-calendar-button" class="primary-button" type="button">Connect Google Calendar</button>
+          <button id="sync-calendar-button" class="text-button" type="button" hidden>Sync now</button>
+          <button id="disconnect-calendar-button" class="text-button" type="button" hidden>Disconnect</button>
+        </div>
+        <div id="calendar-event-list" class="activity-list"></div>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Activities</h2>
+          <button id="show-all-button" class="text-button">Show all</button>
+        </div>
+        <div id="activity-list" class="activity-list">
+          <p class="muted">Loading activities...</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Contacts</h2>
+          <button id="refresh-contacts-button" class="text-button">Refresh</button>
+        </div>
+        <form id="contact-form" class="contact-form">
+          <input name="name" required maxlength="200" placeholder="Contact name">
+          <input name="company" maxlength="200" placeholder="Company (optional)">
+          <select name="relationship">
+            <option value="customer">Customer</option>
+            <option value="vendor">Vendor</option>
+            <option value="lead">Lead</option>
+            <option value="partner">Partner</option>
+            <option value="employee">Employee</option>
+            <option value="other">Other</option>
+          </select>
+          <button class="primary-button" type="submit">Add contact</button>
+        </form>
+        <div id="contact-list" class="activity-list"><p class="muted">Loading contacts...</p></div>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Business Notes</h2>
+          <button id="refresh-notes-button" class="text-button" type="button">Refresh</button>
+        </div>
+        <form id="note-form" class="contact-form">
+          <input name="title" required maxlength="200" placeholder="Note title">
+          <textarea name="content" required maxlength="10000" placeholder="Write a note"></textarea>
+          <button class="primary-button" type="submit">Save note</button>
+        </form>
+        <p id="note-message" class="form-message" role="status"></p>
+        <input id="note-search" type="search" placeholder="Search notes">
+        <div id="note-list" class="activity-list"><p class="muted">Loading notes...</p></div>
+      </section>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Reports</h2>
+          <button id="refresh-reports-button" class="text-button" type="button">Refresh</button>
+        </div>
+        <div id="report-summary" class="report-grid"><p class="muted">Loading reports...</p></div>
+        <div id="report-lists" class="report-lists"></div>
+      </section>
+    </main>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="/mini-app/app.js?v=reports-1"></script>
+  </body>
+</html>
