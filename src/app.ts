@@ -64,6 +64,10 @@ export function buildApp(options: AppOptions = {}) {
     service: "loopify-owner-assistant",
   }));
 
+  app.get("/", async (_request, reply) => {
+    return reply.redirect("/mini-app/");
+  });
+
   if (options.telegramBotToken) {
     const telegramBotToken = options.telegramBotToken;
     app.addHook("onRequest", async (request, reply) => {
