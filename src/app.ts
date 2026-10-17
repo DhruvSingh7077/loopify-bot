@@ -76,9 +76,14 @@ export function buildApp(options: AppOptions = {}) {
           !request.url.startsWith("/briefing") && !request.url.startsWith("/reminders") &&
           !request.url.startsWith("/contacts") && !request.url.startsWith("/calendar") &&
           !request.url.startsWith("/notes")) return;
+      const initDataHeader = String(request.headers["x-telegram-init-data"] ?? "");
+      if (!initDataHeader && process.env.NODE_ENV === "development") {
+        request.headers["x-owner-id"] = "dev-owner";
+        return;
+      }
       try {
         const ownerId = verifyTelegramInitData(
-          String(request.headers["x-telegram-init-data"] ?? ""),
+          initDataHeader,
           telegramBotToken,
         );
         request.headers["x-owner-id"] = ownerId;

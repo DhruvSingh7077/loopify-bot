@@ -2,123 +2,307 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
     <title>Loopify Owner Assistant</title>
-    <link rel="stylesheet" href="/mini-app/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/mini-app/styles.css?v=emerald-grid-1">
   </head>
   <body>
+    <!-- App Header -->
+    <header class="app-header">
+      <div class="header-brand">
+        <div class="brand-badge">LOOPIFY</div>
+        <h1 class="brand-title">Owner Assistant</h1>
+      </div>
+      <div class="header-actions">
+        <button id="refresh-button" class="btn-icon" aria-label="Refresh data" title="Refresh">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+            <path d="M16 21h5v-5"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
     <main class="app-shell">
-      <header class="topbar">
-        <div>
-          <p class="eyebrow">LOOPIFY</p>
-          <h1>Owner Assistant</h1>
-        </div>
-        <button id="refresh-button" class="icon-button" aria-label="Refresh">↻</button>
-      </header>
-
-      <section class="briefing-card">
-        <p class="eyebrow">DAILY BRIEFING</p>
-        <h2 id="briefing-title">Loading your day...</h2>
-        <p id="briefing-summary" class="muted"></p>
-      </section>
-
-      <section class="quick-add card">
-        <div class="section-heading">
-          <h2>Quick Add</h2>
-          <span class="pill">Fast</span>
-        </div>
-        <form id="activity-form">
-          <input id="title" name="title" required maxlength="200" placeholder="What should you remember?">
-          <div class="form-row">
-            <select id="type" name="type">
-              <option value="task">Task</option>
-              <option value="meeting">Meeting</option>
-              <option value="call">Call</option>
-              <option value="follow-up">Follow-up</option>
-            </select>
-            <select id="priority" name="priority">
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-              <option value="critical">Critical</option>
-              <option value="low">Low</option>
-            </select>
+      <!-- TAB 1: TASKS & OVERVIEW -->
+      <section id="tab-overview" class="tab-pane active">
+        <!-- Daily Briefing Hero -->
+        <div class="hero-briefing">
+          <div class="hero-header">
+            <span class="hero-tag">
+              <span class="pulse-dot"></span>
+              DAILY BRIEFING
+            </span>
+            <span class="hero-date" id="current-date-display">Today</span>
           </div>
-          <input id="scheduled-for" name="scheduledFor" type="datetime-local">
-          <button class="primary-button" type="submit">Add activity</button>
-        </form>
-        <p id="form-message" class="form-message" role="status"></p>
+          <h2 id="briefing-title" class="hero-title">Loading your day...</h2>
+          <div id="briefing-summary" class="hero-stats"></div>
+        </div>
+
+        <!-- Google Calendar Compact Bar -->
+        <div class="calendar-card card">
+          <div class="calendar-card-header">
+            <div class="calendar-title-wrap">
+              <div class="calendar-icon-box">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/>
+                  <line x1="8" y1="2" x2="8" y2="6"/>
+                  <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+              </div>
+              <div>
+                <div class="calendar-heading">Google Calendar</div>
+                <p id="calendar-message" class="card-subtitle">Connect your calendar to sync events.</p>
+              </div>
+            </div>
+            <span id="calendar-status" class="status-pill checking">Checking...</span>
+          </div>
+          <div class="calendar-actions">
+            <button id="connect-calendar-button" class="btn btn-secondary btn-sm" type="button">Connect Calendar</button>
+            <button id="sync-calendar-button" class="btn btn-secondary btn-sm" type="button" hidden>Sync now</button>
+            <button id="disconnect-calendar-button" class="btn btn-ghost btn-sm text-danger" type="button" hidden>Disconnect</button>
+          </div>
+          <div id="calendar-event-list" class="calendar-events-list"></div>
+        </div>
+
+        <!-- Quick Add Section -->
+        <div class="card quick-add-card">
+          <div class="card-header-row">
+            <div class="card-title-group">
+              <div class="card-icon-bubble add-bubble">+</div>
+              <div>
+                <h3 class="card-title">Quick Add</h3>
+                <p class="card-subtitle">Create a task, meeting, or call</p>
+              </div>
+            </div>
+            <button id="toggle-add-form" class="btn btn-ghost btn-sm" type="button">Toggle</button>
+          </div>
+
+          <form id="activity-form" class="activity-form">
+            <div class="input-group">
+              <input id="title" name="title" required maxlength="200" placeholder="What needs to be done?" autocomplete="off">
+            </div>
+
+            <div class="form-section-label">ACTIVITY TYPE</div>
+            <div class="chips-selector" data-target="type">
+              <button type="button" class="chip active" data-val="task">
+                <span class="chip-icon">✓</span> Task
+              </button>
+              <button type="button" class="chip" data-val="meeting">
+                <span class="chip-icon">👥</span> Meeting
+              </button>
+              <button type="button" class="chip" data-val="call">
+                <span class="chip-icon">📞</span> Call
+              </button>
+              <button type="button" class="chip" data-val="follow-up">
+                <span class="chip-icon">🔄</span> Follow-up
+              </button>
+            </div>
+            <input type="hidden" id="type" name="type" value="task">
+
+            <div class="form-section-label">PRIORITY</div>
+            <div class="chips-selector" data-target="priority">
+              <button type="button" class="chip priority-chip" data-val="low">Low</button>
+              <button type="button" class="chip priority-chip active" data-val="medium">Medium</button>
+              <button type="button" class="chip priority-chip priority-high" data-val="high">High</button>
+              <button type="button" class="chip priority-chip priority-critical" data-val="critical">Critical</button>
+            </div>
+            <input type="hidden" id="priority" name="priority" value="medium">
+
+            <div class="form-section-label">SCHEDULE (OPTIONAL)</div>
+            <div class="input-group">
+              <input id="scheduled-for" name="scheduledFor" type="datetime-local">
+            </div>
+
+            <button class="btn btn-primary btn-block" type="submit">
+              <span>Add Activity</span>
+            </button>
+          </form>
+          <p id="form-message" class="form-message" role="status"></p>
+        </div>
+
+        <!-- Activities List Section -->
+        <div class="card activities-section">
+          <div class="card-header-row">
+            <div class="card-title-group">
+              <h3 class="card-title">Activities</h3>
+              <span id="activities-count" class="badge">0</span>
+            </div>
+            <div class="filter-pills">
+              <button class="filter-pill active" data-filter="all">All</button>
+              <button class="filter-pill" data-filter="pending">Pending</button>
+              <button class="filter-pill" data-filter="completed">Done</button>
+              <button id="show-all-button" class="filter-pill hidden-pill">All</button>
+            </div>
+          </div>
+          <div id="activity-list" class="activity-cards-list">
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <span>Loading activities...</span>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section class="card">
-        <div class="section-heading">
-          <h2>Google Calendar</h2>
-          <span id="calendar-status" class="pill">Checking...</span>
+      <!-- TAB 2: CONTACTS -->
+      <section id="tab-contacts" class="tab-pane">
+        <div class="card">
+          <div class="card-header-row">
+            <div class="card-title-group">
+              <h3 class="card-title">Add Contact</h3>
+              <p class="card-subtitle">Save clients, partners, and vendors</p>
+            </div>
+            <button id="refresh-contacts-button" class="btn btn-ghost btn-sm" type="button">Refresh</button>
+          </div>
+          <form id="contact-form" class="standard-form">
+            <div class="input-group">
+              <input name="name" required maxlength="200" placeholder="Full name *" autocomplete="off">
+            </div>
+            <div class="input-group">
+              <input name="company" maxlength="200" placeholder="Company (optional)" autocomplete="off">
+            </div>
+            <div class="form-section-label">RELATIONSHIP</div>
+            <div class="chips-selector" data-target="relationship">
+              <button type="button" class="chip active" data-val="customer">Customer</button>
+              <button type="button" class="chip" data-val="lead">Lead</button>
+              <button type="button" class="chip" data-val="partner">Partner</button>
+              <button type="button" class="chip" data-val="vendor">Vendor</button>
+              <button type="button" class="chip" data-val="employee">Employee</button>
+            </div>
+            <input type="hidden" name="relationship" value="customer">
+            <button class="btn btn-primary btn-block" type="submit">Add Contact</button>
+          </form>
         </div>
-        <p id="calendar-message" class="muted">Connect your calendar to create and sync events later.</p>
-        <div class="activity-actions">
-          <button id="connect-calendar-button" class="primary-button" type="button">Connect Google Calendar</button>
-          <button id="sync-calendar-button" class="text-button" type="button" hidden>Sync now</button>
-          <button id="disconnect-calendar-button" class="text-button" type="button" hidden>Disconnect</button>
+
+        <div class="card">
+          <div class="card-header-row">
+            <h3 class="card-title">Contacts Directory</h3>
+            <span id="contacts-count" class="badge">0</span>
+          </div>
+          <div id="contact-list" class="contacts-cards-list">
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <span>Loading contacts...</span>
+            </div>
+          </div>
         </div>
-        <div id="calendar-event-list" class="activity-list"></div>
       </section>
 
-      <section class="card">
-        <div class="section-heading">
-          <h2>Activities</h2>
-          <button id="show-all-button" class="text-button">Show all</button>
+      <!-- TAB 3: BUSINESS NOTES -->
+      <section id="tab-notes" class="tab-pane">
+        <div class="card">
+          <div class="card-header-row">
+            <div class="card-title-group">
+              <h3 class="card-title">New Note</h3>
+              <p class="card-subtitle">Capture thoughts, decisions, and ideas</p>
+            </div>
+            <button id="refresh-notes-button" class="btn btn-ghost btn-sm" type="button">Refresh</button>
+          </div>
+          <form id="note-form" class="standard-form">
+            <div class="input-group">
+              <input name="title" required maxlength="200" placeholder="Note title *" autocomplete="off">
+            </div>
+            <div class="input-group">
+              <textarea name="content" required maxlength="10000" placeholder="Write your notes here..."></textarea>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">Save Note</button>
+          </form>
+          <p id="note-message" class="form-message" role="status"></p>
         </div>
-        <div id="activity-list" class="activity-list">
-          <p class="muted">Loading activities...</p>
+
+        <div class="card">
+          <div class="card-header-row">
+            <h3 class="card-title">All Notes</h3>
+            <span id="notes-count" class="badge">0</span>
+          </div>
+          <div class="search-bar-wrap">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input id="note-search" type="search" placeholder="Search saved notes..." autocomplete="off">
+          </div>
+          <div id="note-list" class="notes-cards-list">
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <span>Loading notes...</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section class="card">
-        <div class="section-heading">
-          <h2>Contacts</h2>
-          <button id="refresh-contacts-button" class="text-button">Refresh</button>
+      <!-- TAB 4: REPORTS & ANALYTICS -->
+      <section id="tab-reports" class="tab-pane">
+        <div class="card">
+          <div class="card-header-row">
+            <div class="card-title-group">
+              <h3 class="card-title">Performance Overview</h3>
+              <p class="card-subtitle">Real-time productivity analytics</p>
+            </div>
+            <button id="refresh-reports-button" class="btn btn-ghost btn-sm" type="button">Refresh</button>
+          </div>
+          <div id="report-summary" class="report-stats-grid">
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <span>Calculating metrics...</span>
+            </div>
+          </div>
         </div>
-        <form id="contact-form" class="contact-form">
-          <input name="name" required maxlength="200" placeholder="Contact name">
-          <input name="company" maxlength="200" placeholder="Company (optional)">
-          <select name="relationship">
-            <option value="customer">Customer</option>
-            <option value="vendor">Vendor</option>
-            <option value="lead">Lead</option>
-            <option value="partner">Partner</option>
-            <option value="employee">Employee</option>
-            <option value="other">Other</option>
-          </select>
-          <button class="primary-button" type="submit">Add contact</button>
-        </form>
-        <div id="contact-list" class="activity-list"><p class="muted">Loading contacts...</p></div>
-      </section>
 
-      <section class="card">
-        <div class="section-heading">
-          <h2>Business Notes</h2>
-          <button id="refresh-notes-button" class="text-button" type="button">Refresh</button>
+        <div class="card">
+          <h3 class="card-title" style="margin-bottom: 12px;">Detailed Breakdown</h3>
+          <div id="report-lists" class="report-breakdowns-list"></div>
         </div>
-        <form id="note-form" class="contact-form">
-          <input name="title" required maxlength="200" placeholder="Note title">
-          <textarea name="content" required maxlength="10000" placeholder="Write a note"></textarea>
-          <button class="primary-button" type="submit">Save note</button>
-        </form>
-        <p id="note-message" class="form-message" role="status"></p>
-        <input id="note-search" type="search" placeholder="Search notes">
-        <div id="note-list" class="activity-list"><p class="muted">Loading notes...</p></div>
-      </section>
-
-      <section class="card">
-        <div class="section-heading">
-          <h2>Reports</h2>
-          <button id="refresh-reports-button" class="text-button" type="button">Refresh</button>
-        </div>
-        <div id="report-summary" class="report-grid"><p class="muted">Loading reports...</p></div>
-        <div id="report-lists" class="report-lists"></div>
       </section>
     </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-tab="tab-overview">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+        <span>Tasks</span>
+      </button>
+      <button class="nav-item" data-tab="tab-contacts">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span>Contacts</span>
+      </button>
+      <button class="nav-item" data-tab="tab-notes">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        <span>Notes</span>
+      </button>
+      <button class="nav-item" data-tab="tab-reports">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"/>
+          <line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+        <span>Reports</span>
+      </button>
+    </nav>
+
+    <!-- Global Toast Container -->
+    <div id="toast" class="toast"></div>
+
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="/mini-app/app.js?v=reports-1"></script>
+    <script src="/mini-app/app.js?v=emerald-grid-1"></script>
   </body>
 </html>
